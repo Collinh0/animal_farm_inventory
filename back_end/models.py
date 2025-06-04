@@ -1,4 +1,22 @@
 from datetime import date
+from sqlalchemy import Column, Integer, String,
+from sqlalchemy.ext.declarative import DeclarativeBase
+
+#creating a base class
+class Base(DeclarativeBase):
+    pass
+
+#creating initial table
+class Animal(Base):
+    __tablename__ = 'animals'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    age = Column(Integer, nullable=False)
+    species = Column(String, nullable=False)
+
+    def __repr__(self):
+        return f"Animal(id={self.id}, name={self.name}, age={self.age}, species={self.species})"
 
 
 class AnimalFeeder:
