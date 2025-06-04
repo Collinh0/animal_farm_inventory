@@ -1,10 +1,36 @@
+from sqlalchemy.ext.declarative import declarative_base
 from datetime import date
-from sqlalchemy import Column, Integer, String,
-from sqlalchemy.ext.declarative import DeclarativeBase
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import sessionmaker
 
-#creating a base class
-class Base(DeclarativeBase):
-    pass
+
+import sqlite3
+
+#connecting to the SQLite database
+conn = sqlite3.connect('animals.db')
+#creating a cursor object
+cursor = conn.cursor()
+
+
+#connecting to the database
+engine = sqlite3.connect('animals.db')
+
+#creating a session
+Session = sessionmaker(bind=engine)
+
+
+
+
+#creating a base classs
+Base = declarative_base()
+
+#fastAPI method
+def get_db():
+    db = Session()
+    try:
+        yield db
+    finally:
+        db.close()
 
 #creating initial table
 class Animal(Base):
@@ -65,11 +91,3 @@ class Goat:
 
 def __repr__(self):
         return f"Goat(id={self.id}, breed={self.breed}, name={self.name}, age={self.age})"
-class pet:
-    def __init__(self, species, name, age):
-        self.id = id
-        self.species = species
-        self.name = name
-        self.age = age
-
-    __tablename__ = 'pet'

@@ -1,2 +1,8 @@
 #for debugging
-from back_end.models AnimalFeeder
+from models import Animal
+from models import AnimalFeeder
+
+print(Animal.__tablename__)
+
+
+
