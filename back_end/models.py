@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from datetime import date
+from datetime import datetime, date
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 
@@ -24,6 +24,13 @@ Session = sessionmaker(bind=engine)
 #creating a base classs
 Base = declarative_base()
 
+class Category(Base):
+    __tablename__ = "animal_types"
+
+    id = Column(Integer, primary_key = True)
+    updated_at = Column(Integer, default = datetime.now())
+
+
 #fastAPI method
 def get_db():
     db = Session()
@@ -31,6 +38,8 @@ def get_db():
         yield db
     finally:
         db.close()
+
+     
 
 #creating initial table
 class Animal(Base):
@@ -55,6 +64,7 @@ class AnimalFeeder:
             self.fed_today[animal_id] = {}
         self.fed_today[animal_id][name] = today
         print(f"Fed {name} (ID: {animal_id}) on {today}.")  #Feed the animal and record the feeding date.
+
    
 
 class Cattle:
