@@ -1,7 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
-from datetime import datetime, date
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import sessionmaker
+from datetime import datetime
+from sqlalchemy import Column, Integer, String,Date, ForeignKey
+from sqlalchemy.orm import sessionmaker, relationship
 
 
 import sqlite3
@@ -47,7 +47,7 @@ class Animal(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    animal_type = Column(String, nullable=False)  # e.g., Cow, Chicken
+    animal_type = Column(String, nullable=False)
     breed = Column(String)
 
     feedings = relationship("Feeding", back_populates="animal", cascade="all, delete")
