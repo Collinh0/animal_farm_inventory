@@ -40,64 +40,47 @@ def get_db():
         db.close()
 
      
+#SQLAlchemy & ORM
 
-#creating initial table
 class Animal(Base):
     __tablename__ = 'animals'
-    
+
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    age = Column(Integer, nullable=False)
-    species = Column(String, nullable=False)
+    animal_type = Column(String, nullable=False)  # e.g., Cow, Chicken
+    breed = Column(String)
+
+    feedings = relationship("Feeding", back_populates="animal", cascade="all, delete")
+    health_records = relationship("HealthRecord", back_populates="animal", cascade="all, delete")
 
     def __repr__(self):
-        return f"Animal(id={self.id}, name={self.name}, age={self.age}, species={self.species})"
+        return f"<Animal(name='{self.name}', type='{self.animal_type}', breed='{self.breed}')>"
 
 
-class AnimalFeeder:
-    def __init__(self):
-        self.fed_today = {}
+class Feeding(Base):
+    __tablename__ = 'feedings'
 
-    def feed(self, animal_id, name):
-        today = date.today()
-        if animal_id not in self.fed_today:
-            self.fed_today[animal_id] = {}
-        self.fed_today[animal_id][name] = today
-        print(f"Fed {name} (ID: {animal_id}) on {today}.")  #Feed the animal and record the feeding date.
+    id = Column(Integer, primary_key=True)
+    date = Column(Date, nullable=False)
+    food = Column(String, nullable=False)
+    quantity = Column(String, nullable=False)  
+    animal_id = Column(Integer, ForeignKey('animals.id'))
 
-   
+    animal = relationship("Animal", back_populates="feedings")
 
-class Cattle:
-    def __init__(self, gender, name, age):
-        self.id = id
-        self.name = name
-        self.age = age
-    __tablename__ = 'cattle'
+    def __repr__(self):
+        return f"<Feeding(animal_id={self.animal_id}, food='{self.food}', date={self.date})>"
 
 
-def __repr__(self):
-        return f"Cattle(id={self.id}, name={self.name}, age={self.age})"
+class HealthRecord(Base):
+    __tablename__ = 'health_records'
 
-class Sheep:
-    def __init__(self,breed, name, age):
-        self.id = id
-        self.breed = breed
-        self.name = name
-        self.age = age
+    id = Column(Integer, primary_key=True)
+    date = Column(Date, nullable=False)
+    notes = Column(String, nullable=False)  
+    animal_id = Column(Integer, ForeignKey('animals.id'))
 
-    __tablename__ = 'sheep'
+    animal = relationship("Animal", back_populates="health_records")
 
-def __repr__(self): 
-        return f"Sheep(id={self.id}, breed={self.breed}, name={self.name}, age={self.age})"
-
-class Goat:
-    def __init__(self, breed, name, age):
-        self.id = id
-        self.breed = breed
-        self.name = name
-        self.age = age
-
-    __tablename__ = 'goat'
-
-def __repr__(self):
-        return f"Goat(id={self.id}, breed={self.breed}, name={self.name}, age={self.age})"
+    def __repr__(self):
+        return f"<HealthRecord(animal_id={self.animal_id}, date={self.date}, notes='{self.notes}')>"

@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from models import get_db,Animal
+from models import Animal
 from schemas import AnimalSchema
+
+
 
 #initialize FastAPI 
 app = FastAPI
